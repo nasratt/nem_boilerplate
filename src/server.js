@@ -1,7 +1,18 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
+import connectDB from './config/dbConnect.js';
+
+// ****** Basic Setup *******
 const app = express();
+dotenv.config();
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+const PORT = process.env.PORT || 8000;
+
+connectDB();
 
 app.get('/ping', (req, res) => {
   res.status(200);
@@ -13,6 +24,6 @@ app.all('*', (req, res) => {
   res.end('Page not found!');
 });
 
-app.listen(process.env.PORT || 8000, () => {
-  console.log(`****** Listening on port ${process.env.PORT || 8000} ******`);
+app.listen(PORT, () => {
+  console.log(`****** Server listening on port ${PORT} ******`);
 });
